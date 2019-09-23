@@ -15,7 +15,7 @@
 
         <div class="item__details__buttons">
           <button
-            :id="`save-for-later-btn-${item.sku}`"
+            :id="`move-to-cart-btn-${item.sku}`"
             type="button"
             name
             @click="moveToCurrentItems"
@@ -78,16 +78,24 @@ export default {
     }
   },
   methods: {
+    /*
+    Called when the move to cart button (#move-to-cart-btn) is clicked
+    Emits an event to remove the item from Saved Items and add to Items
+    */
     moveToCurrentItems() {
       this.$emit("move-to-cart", this.item.id);
     },
+    /*
+    Called when the remove button (#remove-btn) is clicked
+    Emits an event to remove the item from Saved Items
+    */
     removeItemFromSaved() {
-      this.$emit("remove", this.item.id);
+      this.$emit("remove-from-saved", this.item.id);
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/CartItem.scss";
+@import "../styles/SavedItem.scss";
 </style>

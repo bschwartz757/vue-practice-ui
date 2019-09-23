@@ -96,7 +96,7 @@
           :key="item.id"
           :item="item"
           @move-to-cart="moveToCart"
-          @remove="removeFromSaved"
+          @remove-from-saved="removeFromSaved"
         />
       </div>
     </section>
