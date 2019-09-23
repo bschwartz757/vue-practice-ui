@@ -2,16 +2,10 @@
   <div class="item">
     <div class="item__details">
       <figure class="item__details__image">
-        <img
-          :src="productImage"
-          alt=""
-        >
+        <img :src="productImage" alt />
       </figure>
       <div class="item__details__item">
-        <a
-          href="#"
-          class="item__details__name"
-        >
+        <a href="#" class="item__details__name">
           <span class="item__details__brand">{{ item.brand }}</span>
           Deva 60 Pack - Women's
         </a>
@@ -23,19 +17,17 @@
           <button
             :id="`save-for-later-btn-${item.sku}`"
             type="button"
-            name=""
+            name
+            @click="saveItemForLater"
             class="btn btn--small"
-          >
-            Save for later
-          </button>
+          >Save for later</button>
           <button
             :id="`remove-btn-${item.sku}`"
             type="button"
-            name=""
+            name
+            @click="removeItemFromCart"
             class="btn btn--small"
-          >
-            Remove
-          </button>
+          >Remove</button>
         </div>
       </div>
     </div>
@@ -52,12 +44,7 @@
             >
               <MinusIcon />
             </button>
-            <input
-              type="number"
-              name=""
-              pattern="[0-9]*"
-              :value="item.quantity"
-            >
+            <input type="number" name pattern="[0-9]*" :value="item.quantity" />
             <button
               :id="`increment-${item.sku}`"
               type="button"
@@ -77,23 +64,12 @@
         </div>
         <fieldset>
           <div class="item__options__row">
-            <input
-              :id="`item-ship-${item.id}`"
-              type="radio"
-              :name="inputName"
-              value=""
-              checked
-            >
+            <input :id="`item-ship-${item.id}`" type="radio" :name="inputName" value checked />
             <label :for="`item-ship-${item.id}`">Ship - Free for orders over $50</label>
           </div>
 
           <div class="item__options__row">
-            <input
-              :id="`item-pick-up-${item.id}`"
-              type="radio"
-              :name="inputName"
-              value=""
-            >
+            <input :id="`item-pick-up-${item.id}`" type="radio" :name="inputName" value />
             <label :for="`item-pick-up-${item.id}`">Pick up in store - Free</label>
             <a href="#">Find a store near you</a>
           </div>
@@ -104,20 +80,20 @@
 </template>
 
 <script>
-import PlusIcon from '../assets/icons/PlusIcon.vue';
-import MinusIcon from '../assets/icons/MinusIcon.vue';
+import PlusIcon from "../assets/icons/PlusIcon.vue";
+import MinusIcon from "../assets/icons/MinusIcon.vue";
 
 export default {
-  name: 'CartItem',
+  name: "CartItem",
   components: {
     PlusIcon,
-    MinusIcon,
+    MinusIcon
   },
   props: {
     item: {
       type: Object,
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   computed: {
     /*
@@ -145,7 +121,7 @@ export default {
     totalPrice() {
       const total = this.item.price * this.item.quantity;
       return total.toFixed(2);
-    },
+    }
   },
   methods: {
     /*
@@ -153,7 +129,7 @@ export default {
     Emits an event to increase the item quantity by 1
     */
     incrementQuantity() {
-      this.$emit('increment-quantity', this.item.id);
+      this.$emit("increment-quantity", this.item.id);
     },
 
     /*
@@ -161,12 +137,26 @@ export default {
     Emits an event to decrease the item quantity by 1
     */
     decrementQuantity() {
-      this.$emit('decrement-quantity', this.id);
+      this.$emit("decrement-quantity", this.item.id);
     },
-  },
+    /*
+    Called when the save for later button (#save-for-later-btn) is clicked
+    Emits an event to remove the item from Items and add to Saved Items
+    */
+    saveItemForLater() {
+      this.$emit("save-for-later", this.item.id);
+    },
+    /*
+    Called when the remove button (#remove-btn) is clicked
+    Emits an event to remove the item from Items
+    */
+    removeItemFromCart() {
+      this.$emit("remove", this.item.id);
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
-@import '../styles/CartItem.scss';
+@import "../styles/CartItem.scss";
 </style>
