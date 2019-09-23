@@ -11,20 +11,8 @@
         <span>Subtotal</span>
       </div>
       <div class="overview--buttons">
-        <button
-          type="button"
-          name="button"
-          class="btn btn--secondary"
-        >
-          Continue shopping
-        </button>
-        <button
-          type="button"
-          name="button"
-          class="btn btn--primary"
-        >
-          Proceed to checkout
-        </button>
+        <button type="button" name="button" class="btn btn--secondary">Continue shopping</button>
+        <button type="button" name="button" class="btn btn--primary">Proceed to checkout</button>
       </div>
     </section>
 
@@ -55,10 +43,7 @@
           @remove="remove"
         />
       </div>
-      <div
-        v-else
-        class="cart__empty"
-      >
+      <div v-else class="cart__empty">
         <h6>There are no items in your cart.</h6>
       </div>
     </section>
@@ -67,7 +52,8 @@
     <section class="summary">
       <div class="summary__notices">
         <span class="summary__notice">
-          This order qualifies for FREE Standard shipping! <a href="#">Learn more</a>
+          This order qualifies for FREE Standard shipping!
+          <a href="#">Learn more</a>
         </span>
         <span class="summary__notice">
           <strong>Have a coupon?</strong>
@@ -82,38 +68,57 @@
       <div class="summary__checkout">
         <div class="summary__shipping">
           <span>FREE shipping</span>
-          <span><strong>$0.00</strong></span>
+          <span>
+            <strong>$0.00</strong>
+          </span>
         </div>
         <div class="summary__subtotal">
           <h6>Subtotal</h6>
           <h6>${{ data.subtotal }}</h6>
         </div>
-        <button
-          type="button"
-          name="button"
-          class="btn btn--primary"
-        >
-          Proceed to checkout
-        </button>
+        <button type="button" name="button" class="btn btn--primary">Proceed to checkout</button>
+      </div>
+    </section>
+
+    <!-- Credit card -->
+    <section class="credit">
+      <CreditCard />
+    </section>
+
+    <!-- Saved items -->
+    <section class="saved">
+      <div v-if="data.savedItems.length">
+        <div class="saved__labels--product">
+          <h6>Saved for later</h6>
+        </div>
+        <SavedItem
+          v-for="item in data.savedItems"
+          :key="item.id"
+          :item="item"
+          @move-to-cart="moveToCart"
+          @remove="removeFromSaved"
+        />
       </div>
     </section>
   </main>
 </template>
 
 <script>
-import mockData from '../../mockData.json';
-import CartItem from './CartItem.vue';
-import SavedItem from './SavedItem.vue';
+import mockData from "../../mockData.json";
+import CartItem from "./CartItem.vue";
+import SavedItem from "./SavedItem.vue";
+import CreditCard from "./CreditCard.vue";
 
 export default {
-  name: 'Cart',
+  name: "Cart",
   components: {
     CartItem,
     SavedItem,
+    CreditCard
   },
   data() {
     return {
-      data: mockData,
+      data: mockData
     };
   },
   computed: {
@@ -127,14 +132,16 @@ export default {
         total = quantities.reduce((a, b) => a + b);
       }
       return total;
-    },
+    }
   },
   methods: {
     /*
     On the increment-quantity event, increase the item quantity by 1.
     */
     incrementQuantity(cartItemId) {
-      const itemToIncrement = this.data.items.find(cartItem => cartItem.id === cartItemId);
+      const itemToIncrement = this.data.items.find(
+        cartItem => cartItem.id === cartItemId
+      );
       itemToIncrement.quantity += 1;
     },
 
@@ -142,7 +149,9 @@ export default {
     On the decrement-quantity event, decrease the item quantity by 1.
     */
     decrementQuantity(cartItemId) {
-      const itemToDecrement = this.data.items.find(cartItem => cartItem.id === cartItemId);
+      const itemToDecrement = this.data.items.find(
+        cartItem => cartItem.id === cartItemId
+      );
       itemToDecrement.quantity -= 1;
     },
 
@@ -150,7 +159,9 @@ export default {
     On the save-for-later event, move the item out of the cart and into the savedItems.
     */
     saveForLater(cartItemId) {
-      const itemIndex = this.data.items.findIndex(cartItem => cartItem.id === cartItemId);
+      const itemIndex = this.data.items.findIndex(
+        cartItem => cartItem.id === cartItemId
+      );
       const savedItem = { ...this.data.items[itemIndex] };
       this.data.savedItems.push(savedItem);
       this.data.items.splice(itemIndex, 1);
@@ -160,7 +171,9 @@ export default {
     On the remove event, remove the item from the cart.
     */
     remove(cartItemId) {
-      const itemIndex = this.data.items.findIndex(cartItem => cartItem.id === cartItemId);
+      const itemIndex = this.data.items.findIndex(
+        cartItem => cartItem.id === cartItemId
+      );
       this.data.items.splice(itemIndex, 1);
     },
 
@@ -168,7 +181,9 @@ export default {
     On the move-to-cart event, remove the item out of savedItems and into cart items.
     */
     moveToCart(payload) {
-      const itemIndex = this.data.savedItems.findIndex(cartItem => cartItem.id === payload);
+      const itemIndex = this.data.savedItems.findIndex(
+        cartItem => cartItem.id === payload
+      );
       const cartItem = { ...this.data.savedItems[itemIndex] };
       this.data.items.push(cartItem);
       this.data.savedItems.splice(itemIndex, 1);
@@ -178,14 +193,16 @@ export default {
     On the remove-from-saved event, remove the item out of savedItems.
     */
     removeFromSaved(payload) {
-      const itemIndex = this.data.items.findIndex(cartItem => cartItem.id === payload);
+      const itemIndex = this.data.items.findIndex(
+        cartItem => cartItem.id === payload
+      );
       this.data.savedItems.splice(itemIndex, 1);
-    },
-  },
+    }
+  }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-@import '../styles/Cart.scss';
+@import "../styles/Cart.scss";
 </style>
