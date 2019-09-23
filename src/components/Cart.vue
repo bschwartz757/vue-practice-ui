@@ -7,7 +7,7 @@
         <span id="cart-item-count">{{ itemsAmount }} {{itemsText}}</span>
       </div>
       <div class="overview--subtotal">
-        <h2>${{ data.subtotal }}</h2>
+        <h2>${{ calcSubtotal }}</h2>
         <span>Subtotal</span>
       </div>
       <div class="overview--buttons">
@@ -74,7 +74,7 @@
         </div>
         <div class="summary__subtotal">
           <h6>Subtotal</h6>
-          <h6>${{ data.subtotal }}</h6>
+          <h6>${{ calcSubtotal }}</h6>
         </div>
         <button type="button" name="button" class="btn btn--primary">Proceed to checkout</button>
       </div>
@@ -133,8 +133,22 @@ export default {
       }
       return total;
     },
+    /*
+    Returns the correct text based on total amount of items in the cart.
+    */
     itemsText() {
       return this.itemsAmount === 1 ? "item" : "items";
+    },
+    /*
+    Returns the total price of all the items in the cart.
+    */
+    calcSubtotal() {
+      return this.data.items
+        .reduce((acc, curr) => {
+          acc += curr.price * curr.quantity;
+          return acc;
+        }, 0)
+        .toFixed(2);
     }
   },
   methods: {

@@ -59,7 +59,7 @@
             <span>${{ formattedPrice }}</span>
           </div>
           <div class="item__options__total">
-            <span>{{ totalPrice }}</span>
+            <span>${{ totalPrice }}</span>
           </div>
         </div>
         <fieldset>
