@@ -4,7 +4,7 @@
     <section class="overview">
       <div class="overview--items">
         <h2>Shopping Cart</h2>
-        <span id="cart-item-count">{{ itemsAmount }} items</span>
+        <span id="cart-item-count">{{ itemsAmount }} {{itemsText}}</span>
       </div>
       <div class="overview--subtotal">
         <h2>${{ data.subtotal }}</h2>
@@ -132,6 +132,9 @@ export default {
         total = quantities.reduce((a, b) => a + b);
       }
       return total;
+    },
+    itemsText() {
+      return this.itemsAmount === 1 ? "item" : "items";
     }
   },
   methods: {
